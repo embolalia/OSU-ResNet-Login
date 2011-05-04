@@ -21,6 +21,7 @@
 import urllib
 import re
 import getpass
+import time 
 
 def get_login_url():
     """Returns login url.
@@ -48,7 +49,7 @@ def get_login_url():
         url = re.search("https://[^ '\"]+", data)
         if url is None:
             #No result found - time to die
-            #This probably means OSU changes the ResNet response page
+            #This probably means OSU changed the ResNet response page
             raise Exception("Could not find login url")
         
         #Return the URL
@@ -126,9 +127,13 @@ def do_login(loginurl, params):
 
 
 if __name__ == "__main__":
-    url = get_login_url()
-    if url is None:
-        print "Already logged in to ResNet."
-    else:
-        (loginurl, params) = get_captive_form(url)
-        do_login(loginurl, params)
+	while True:
+		time.sleep(5)
+		print "YAY"
+		url = get_login_url()
+		if url is None:
+			pass
+		else:
+			(loginurl, params) = get_captive_form(url)
+			do_login(loginurl, params)
+
