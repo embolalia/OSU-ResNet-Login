@@ -35,7 +35,7 @@ def get_login_url():
     #See if we're logged in already
     #If we are, this will go through to xkcd, which returns a 404
     #If we aren't this will let us find the login url
-    conn = urllib.urlopen("http://www.xkcd.com/404")
+    conn = urllib.urlopen("http:/209.114.34.184/404")
     code = conn.getcode()
     data = conn.read()
     conn.close()
@@ -105,13 +105,13 @@ def get_captive_form(url):
     params["username"] = "name.1"
 
 
-    params["password"] = getpass.getpass("OSU Login Password: ")
+    #params["password"] = getpass.getpass("OSU Login Password: ")
 
     #If you want, you can comment the above line and uncomment the code below
     #Then put your password in plaintext in the quotes, and you won't have to enter it
     #Of course, then anyone could just read your password if they look in this file
 
-    #params["password"] = "your password in plaintext here"
+    params["password"] = "your password in plaintext here"
 
     return (loginurl, params)
 
@@ -129,7 +129,7 @@ def do_login(loginurl, params):
 if __name__ == "__main__":
 	while True:
 		time.sleep(5)
-		print "YAY"
+	#	print "YAY"
 		url = get_login_url()
 		if url is None:
 			pass
