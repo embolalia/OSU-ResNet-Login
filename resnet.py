@@ -1,3 +1,4 @@
+#!/usr/bin/env python2.7
 #Copyright (c) 2011 Andrew Krieger
 #
 #Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,8 +23,9 @@ import urllib
 import re
 import getpass
 import time 
+import argparse
 
-def get_login_url():
+def get_login_url(force):
     """Returns login url.
 
     If we're already logged in to ResNet, this just returns None
@@ -35,7 +37,10 @@ def get_login_url():
     #See if we're logged in already
     #If we are, this will go through to xkcd, which returns a 404
     #If we aren't this will let us find the login url
-    conn = urllib.urlopen("http:/209.114.34.184/404")
+    if force: return 'https://be4cas02.resnet.ohio-state.edu/auth/'+\
+              'perfigo_weblogin.jsp'
+    url = "http:/209.114.34.184/404"
+    conn = urllib.urlopen(url)
     code = conn.getcode()
     data = conn.read()
     conn.close()
@@ -127,13 +132,26 @@ def do_login(loginurl, params):
 
 
 if __name__ == "__main__":
-	while True:
-		time.sleep(5)
-	#	print "YAY"
-		url = get_login_url()
-		if url is None:
-			pass
-		else:
-			(loginurl, params) = get_captive_form(url)
-			do_login(loginurl, params)
+    parser = argparse.ArgumentParser(description=
+                                     'Log in automatically to OSU Resnet')
+    parser.add_argument('-f', action='store_true',
+                        help='Force login every 23.5 hours,'+\
+                        'rather than testing if it\'s needed.')
+    args = parser.parse_args()
+    force = args.f
+    
+    while True:
+        if force:
+            url = get_login_url(force)
+            (loginurl, params) = get_captive_form(url)
+            do_login(loginurl, params)
+            time.sleep(84600)
+        else:
+            time.sleep(5)
+            url = get_login_url(force)
+            if url is None:
+                pass
+            else:
+                (loginurl, params) = get_captive_form(url)
+                do_login(loginurl, params)
 
