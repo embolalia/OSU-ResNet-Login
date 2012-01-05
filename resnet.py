@@ -39,7 +39,7 @@ def get_login_url(force):
     #If we aren't this will let us find the login url
     if force: return 'https://be4cas02.resnet.ohio-state.edu/auth/'+\
               'perfigo_weblogin.jsp'
-    url = "http:/209.114.34.184/404"
+    url = "http://embolalia.net/404"
     conn = urllib.urlopen(url)
     code = conn.getcode()
     data = conn.read()
